@@ -1,0 +1,33 @@
+# --- Java/Maven ---
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# --- IDE Files ---
+.idea/
+.settings/
+.project
+.classpath
+*.iml
+.vscode/
+
+# --- Selenium/Drivers ---
+# Don't commit driver binaries; download them via WebDriverManager
+chromedriver
+geckodriver
+msedgedriver
+*.exe
+
+# --- Build/Environment ---
+# If you are using a local properties file for environment config
+# and it contains sensitive data, exclude it.
+config.properties
+# Or, if you want to commit the template but ignore the local override:
+# config.local.properties
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db

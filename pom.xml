@@ -1,0 +1,12 @@
+<project xmlns="http://apache.org">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example</groupId>
+    <artifactId>guice-multi-module</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging> <!-- CRITICAL: Must be pom -->
+
+    <modules>
+        <module>provider-module</module>
+        <module>singleton-module</module>
+    </modules>
+</project>
