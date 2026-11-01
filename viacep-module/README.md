@@ -69,20 +69,37 @@ guice-multi-module/
 
 ## Executar
 
-Na raiz do repositório, execute todos os módulos:
+Execute os comandos na raiz do repositório. Para rodar cada módulo:
+
+```bash
+# TestNG + Selenium + Guice Provider
+mvn -pl provider-module test
+
+# JUnit + Selenium + Guice Singleton
+mvn -pl singleton-module test
+
+# JUnit + Rest Assured + ViaCEP
+mvn -pl viacep-module test
+```
+
+Para executar os testes de todos os módulos:
 
 ```bash
 mvn test
 ```
 
-Para executar apenas um módulo:
+Para executar a verificação completa do reactor, incluindo a fase `verify`:
 
 ```bash
-mvn -pl viacep-module test
+mvn verify
 ```
 
-Os testes do ViaCEP chamam a API pública e precisam de acesso à internet. O
-adaptador Allure grava resultados em
+O GitHub Actions executa `mvn verify` em pushes e pull requests, usando Java 17
+e Chrome, e publica relatórios do Surefire/Allure como artefato da execução.
+Os módulos Selenium precisam do Chrome instalado; o `viacep-module` precisa de
+acesso à internet para consultar a API pública.
+
+O adaptador Allure do `viacep-module` grava resultados em
 `viacep-module/target/allure-results`. Para gerar o relatório HTML, use a CLI
 do Allure:
 
