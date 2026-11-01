@@ -1,13 +1,13 @@
 package module.config.base;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.testng.annotations.BeforeMethod;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.name.Named;
 
 import module.config.ViaCepModule;
+import module.config.qualifiers.CepEndpoint;
 
 import io.restassured.specification.RequestSpecification;
 
@@ -18,10 +18,10 @@ public abstract class BaseTest {
     protected RequestSpecification request;
 
     @Inject
-    @Named(ViaCepModule.CEP_ENDPOINT)
+    @CepEndpoint
     protected String cepEndpoint;
 
-    @BeforeEach
+    @BeforeMethod
     protected void setUp() {
         injector = Guice.createInjector(new ViaCepModule());
         injector.injectMembers(this);

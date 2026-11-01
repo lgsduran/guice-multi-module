@@ -5,10 +5,10 @@ import java.io.InputStream;
 import java.util.Map;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.name.Names;
 
 import module.config.providers.ViaCepRequestProvider;
 import module.config.qualifiers.BaseUrl;
+import module.config.qualifiers.CepEndpoint;
 
 import io.restassured.specification.RequestSpecification;
 import org.yaml.snakeyaml.LoaderOptions;
@@ -16,70 +16,56 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 public final class ViaCepModule extends AbstractModule {
-    public static final String CEP_ENDPOINT = "viacep.endpoint.cep";
     private static final String CONFIG_RESOURCE = "endpoints.yml";
 
-    private final String baseUrl;
-    private final String cepEndpoint;
+    private final Map<?, ?> configuration = loadConfiguration();
 
-    public ViaCepModule() {
-        this(loadConfiguration());
-    }
+    @Override
+    protected void configure() {
+        String baseUrl = requiredString(configuration.get("base-url"), "base-url");
+        if (!baseUrl.startsWith("https://")) {
+            throw invalidConfiguration("base-url");
+        }
 
-    public ViaCepModule(String baseUrl) {
-        this(baseUrl, readCepEndpoint(loadConfiguration()));
-    }
+        Map<?, ?> endpoints = requiredMap(configuration.get("endpoints"), "endpoints");
+        String cepEndpoint = requiredString(endpoints.get("consulta-cep"), "endpoints.consulta-cep");
+        if (!cepEndpoint.startsWith("/") || !cepEndpoint.contains("{cep}")) {
+            throw invalidConfiguration("endpoints.consulta-cep");
+        }
 
-    private ViaCepModule(Map<?, ?> configuration) {
-        this(readBaseUrl(configuration), readCepEndpoint(configuration));
-    }
-
-    private ViaCepModule(String baseUrl, String cepEndpoint) {
-        this.baseUrl = baseUrl;
-        this.cepEndpoint = cepEndpoint;
+        bind(String.class).annotatedWith(BaseUrl.class).toInstance(baseUrl);
+        bind(String.class).annotatedWith(CepEndpoint.class).toInstance(cepEndpoint);
+        bind(RequestSpecification.class).toProvider(ViaCepRequestProvider.class);
     }
 
     private static Map<?, ?> loadConfiguration() {
-        InputStream resource = ViaCepModule.class.getClassLoader().getResourceAsStream(CONFIG_RESOURCE);
-        if (resource == null) {
-            throw new IllegalStateException("Recurso de configuração ausente: " + CONFIG_RESOURCE);
-        }
-
-        try (InputStream input = resource) {
-            Object configuration = new Yaml(new SafeConstructor(new LoaderOptions())).load(input);
-            if (configuration instanceof Map<?, ?> values) {
-                return values;
+        try (InputStream input = ViaCepModule.class.getClassLoader()
+                .getResourceAsStream(CONFIG_RESOURCE)) {
+            if (input == null) {
+                throw new IllegalStateException("Recurso ausente: " + CONFIG_RESOURCE);
             }
-            throw new IllegalStateException("Configuração inválida em " + CONFIG_RESOURCE);
+            Object configuration = new Yaml(new SafeConstructor(new LoaderOptions())).load(input);
+            return requiredMap(configuration, CONFIG_RESOURCE);
         } catch (IOException e) {
             throw new IllegalStateException("Não foi possível ler " + CONFIG_RESOURCE, e);
         }
     }
 
-    private static String readBaseUrl(Map<?, ?> configuration) {
-        Object value = configuration.get("base-url");
-        if (value instanceof String baseUrl && baseUrl.startsWith("https://")) {
-            return baseUrl;
+    private static Map<?, ?> requiredMap(Object value, String key) {
+        if (value instanceof Map<?, ?> map) {
+            return map;
         }
-        throw new IllegalStateException("Configuração inválida em " + CONFIG_RESOURCE + ": base-url");
+        throw invalidConfiguration(key);
     }
 
-    private static String readCepEndpoint(Map<?, ?> configuration) {
-        Object endpointsValue = configuration.get("endpoints");
-        if (endpointsValue instanceof Map<?, ?> endpoints
-                && endpoints.get("consulta-cep") instanceof String endpoint
-                && endpoint.startsWith("/")
-                && endpoint.contains("{cep}")) {
-            return endpoint;
+    private static String requiredString(Object value, String key) {
+        if (value instanceof String string && !string.isBlank()) {
+            return string;
         }
-        throw new IllegalStateException(
-                "Configuração inválida em " + CONFIG_RESOURCE + ": endpoints.consulta-cep");
+        throw invalidConfiguration(key);
     }
 
-    @Override
-    protected void configure() {
-        bind(String.class).annotatedWith(BaseUrl.class).toInstance(baseUrl);
-        bind(String.class).annotatedWith(Names.named(CEP_ENDPOINT)).toInstance(cepEndpoint);
-        bind(RequestSpecification.class).toProvider(ViaCepRequestProvider.class);
+    private static IllegalStateException invalidConfiguration(String key) {
+        return new IllegalStateException("Configuração inválida: " + key);
     }
 }

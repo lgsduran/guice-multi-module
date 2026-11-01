@@ -52,8 +52,8 @@ guice-multi-module/
   e testes paralelos com TestNG.
 - `singleton-module`: demonstra WebDriver singleton, providers, qualifiers,
   classe-base, extensão de screenshots, Page Object e testes JUnit 5.
-- `viacep-module`: configura Rest Assured com Guice e testa a API ViaCEP,
-  incluindo validação de JSON Schema e relatórios Allure.
+- `viacep-module`: configura Rest Assured com Guice e testa a API ViaCEP usando
+  TestNG, incluindo validação de JSON Schema e relatórios Allure.
 
 ### Estrutura interna do `viacep-module`
 
@@ -78,7 +78,7 @@ mvn -pl provider-module test
 # JUnit + Selenium + Guice Singleton
 mvn -pl singleton-module test
 
-# JUnit + Rest Assured + ViaCEP
+# TestNG + Rest Assured + ViaCEP
 mvn -pl viacep-module test
 ```
 

@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="ViaCEP Module Test Suite">
+    <test name="ViaCEP API Tests">
+        <classes>
+            <class name="module.tests.ViaCepTest"/>
+        </classes>
+    </test>
+</suite>

@@ -1,6 +1,5 @@
 package module.tests;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -16,17 +15,16 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 @Epic("API ViaCEP")
 @Feature("Consulta de CEP")
-class ViaCepTest extends BaseTest {
-    @Test
-    @DisplayName("Deve retornar 200 OK e o endereço correto ao buscar um CEP válido")
+public class ViaCepTest extends BaseTest {
+    @Test(description = "Deve retornar 200 OK e o endereço correto ao buscar um CEP válido")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Valida os campos de endereço retornados para um CEP válido.")
-    void deveRetornarCepValido() {
+    public void deveRetornarCepValido() {
         Response response = consultarCep("01001000");
 
         response.then()
@@ -41,22 +39,20 @@ class ViaCepTest extends BaseTest {
             .body("uf", equalTo("SP"));
     }
 
-    @Test
-    @DisplayName("Deve retornar campo 'erro=true' quando o CEP possui formato válido mas não existe")
+    @Test(description = "Deve retornar campo 'erro=true' quando o CEP possui formato válido mas não existe")
     @Severity(SeverityLevel.NORMAL)
     @Description("Valida o campo de erro quando o CEP não está cadastrado.")
-    void deveRetornarErroParaCepInexistente() {
+    public void deveRetornarErroParaCepInexistente() {
         Response response = consultarCep("99999999");
 
         response.then().statusCode(200);
-        assertTrue(response.jsonPath().getBoolean("erro"));
+        Assert.assertTrue(response.jsonPath().getBoolean("erro"));
     }
 
-    @Test
-    @DisplayName("Deve retornar status 400 Bad Request se o formato do CEP for totalmente inválido")
+    @Test(description = "Deve retornar status 400 Bad Request se o formato do CEP for totalmente inválido")
     @Severity(SeverityLevel.NORMAL)
     @Description("Valida a resposta HTTP 400 para um CEP com formato inválido.")
-    void deveRetornar400ParaFormatoInvalido() {
+    public void deveRetornar400ParaFormatoInvalido() {
         Response response = consultarCep("123_INVALIDO");
 
         response.then().statusCode(400);

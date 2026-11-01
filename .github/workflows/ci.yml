@@ -32,7 +32,7 @@ jobs:
       - name: Set up Chrome
         uses: browser-actions/setup-chrome@v1
 
-      - name: Run Maven verification
+      - name: Run Maven verification (TestNG and JUnit suites)
         run: mvn --batch-mode --no-transfer-progress verify
 
       - name: Upload test reports

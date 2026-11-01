@@ -12,8 +12,8 @@ Brazilian postal service API.
 - **`singleton-module`** — Singleton WebDriver, providers, qualifiers, a base
   test class, a screenshot extension, the Page Object pattern, and JUnit 5
   tests.
-- **`viacep-module`** — Rest Assured configured with Guice, ViaCEP API tests,
-  JSON Schema validation, and Allure reports. See the
+- **`viacep-module`** — Rest Assured configured with Guice, ViaCEP API tests
+  with TestNG, JSON Schema validation, and Allure reports. See the
   [module README](viacep-module/README.md) for details.
 
 ## Project Structure
@@ -22,7 +22,10 @@ Brazilian postal service API.
 guice-multi-module/
 ├── pom.xml
 ├── provider-module/
-│   └── src/test/java/module/
+│   ├── pom.xml
+│   ├── testng.xml
+│   ├── testng.xml
+└── src/test/java/module/
 │       ├── config/
 │       └── tests/
 ├── singleton-module/
@@ -61,15 +64,22 @@ Run these commands from the repository root.
 To run an individual module:
 
 ```bash
-# TestNG + Selenium + Guice Provider
+# TestNG suite from provider-module/testng.xml
 mvn -pl provider-module test
 
 # JUnit + Selenium + Guice Singleton
 mvn -pl singleton-module test
 
-# JUnit + Rest Assured + ViaCEP
+# TestNG suite from viacep-module/testng.xml + Rest Assured + ViaCEP
 mvn -pl viacep-module test
 ```
+
+Each TestNG module's Surefire configuration points to its `testng.xml` suite.
+The `provider-module` suite selects `module.tests.ParallelSearchTest`; the
+`viacep-module` suite selects `module.tests.ViaCepTest`. Therefore,
+`mvn -pl provider-module test`, `mvn -pl viacep-module test`, and the CI's
+`mvn verify` execute the corresponding TestNG suites. The `singleton-module`
+continues to use JUnit 5.
 
 To run all tests:
 
@@ -84,7 +94,9 @@ mvn verify
 ```
 
 GitHub Actions runs `mvn verify` on pushes and pull requests using Ubuntu
-24.04, Java 17, and Chrome. Surefire and Allure reports are available as
+24.04, Java 17, and Chrome. This runs the TestNG suites configured by
+`provider-module/testng.xml` and `viacep-module/testng.xml`, plus the JUnit
+suite in `singleton-module`. Surefire and Allure reports are available as
 workflow artifacts.
 
 ## Allure Report
