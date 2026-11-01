@@ -33,15 +33,18 @@ guice-multi-module/
 ├── provider-module/
 │   ├── pom.xml
 │   ├── testng.xml
-│   └── src/test/java/module/
-│       ├── config/
-│       │   ├── providers/
-│       │   ├── qualifiers/
-│       │   ├── SearchUrlModule.java
-│       │   └── WebDriverModule.java
-│       └── tests/
-│           ├── ParallelSearchTest.java
-│           └── ThreadLocalWebDriverProviderTest.java
+│   └── src/test/
+│       ├── java/module/
+│       │   ├── config/
+│       │   │   ├── providers/
+│       │   │   ├── qualifiers/
+│       │   │   ├── SearchUrlModule.java
+│       │   │   └── WebDriverModule.java
+│       │   └── tests/
+│       │       ├── ParallelSearchTest.java
+│       │       └── ThreadLocalWebDriverProviderTest.java
+│       └── resources/
+│           └── config.properties
 ├── singleton-module/
 │   └── src/test/
 │       ├── java/module/
@@ -105,6 +108,9 @@ continues to use JUnit 5.
 The `singleton-module` explicit-wait timeout is configured in
 `singleton-module/src/test/resources/config.properties` with the
 `webdriver.wait.timeout.seconds` property.
+The `provider-module` Google and Bing URLs are configured in
+`provider-module/src/test/resources/config.properties` with the `google.url`
+and `bing.url` properties.
 
 To run all tests:
 

@@ -31,6 +31,7 @@ msedgedriver
 config.properties
 # This module's test configuration contains only non-sensitive defaults.
 !singleton-module/src/test/resources/config.properties
+!provider-module/src/test/resources/config.properties
 # Or, if you want to commit the template but ignore the local override:
 # config.local.properties
 
