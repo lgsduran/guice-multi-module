@@ -24,8 +24,7 @@ guice-multi-module/
 ├── provider-module/
 │   ├── pom.xml
 │   ├── testng.xml
-│   ├── testng.xml
-└── src/test/java/module/
+│   └── src/test/java/module/
 │       ├── config/
 │       └── tests/
 ├── singleton-module/
@@ -38,6 +37,8 @@ guice-multi-module/
 │       ├── pages/
 │       └── tests/
 └── viacep-module/
+    ├── pom.xml
+    ├── testng.xml
     └── src/test/
         ├── java/module/
         │   ├── config/
@@ -99,12 +100,24 @@ GitHub Actions runs `mvn verify` on pushes and pull requests using Ubuntu
 suite in `singleton-module`. Surefire and Allure reports are available as
 workflow artifacts.
 
-## Allure Report
+## Allure Reports
 
-After running the `viacep-module` tests, generate the HTML report with the
-Allure CLI:
+Each module writes its own Allure results. Run its tests, then generate that
+module's HTML report with the Allure CLI:
 
 ```bash
+# provider-module
+mvn -pl provider-module test
+allure generate provider-module/target/allure-results \
+  --output provider-module/target/allure-report --clean
+
+# singleton-module
+mvn -pl singleton-module test
+allure generate singleton-module/target/allure-results \
+  --output singleton-module/target/allure-report --clean
+
+# viacep-module
+mvn -pl viacep-module test
 allure generate viacep-module/target/allure-results \
   --output viacep-module/target/allure-report --clean
 ```

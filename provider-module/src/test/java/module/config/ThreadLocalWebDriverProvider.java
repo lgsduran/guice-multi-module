@@ -13,6 +13,12 @@ public class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
 
     private static final ThreadLocal<WebDriver> THREAD_LOCAL_DRIVER = new ThreadLocal<>();
 
+    /**
+     * Provides a WebDriver instance that is unique to the current thread.
+     * If the driver is not already created for the current thread, it initializes a new ChromeDriver with specified options.
+     *
+     * @return a WebDriver instance unique to the current thread
+     */
     @Override
     public WebDriver get() {
         WebDriver driver = THREAD_LOCAL_DRIVER.get();
@@ -23,6 +29,11 @@ public class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
         return driver;
     }
 
+    /**
+     * Creates a new ChromeDriver instance with the specified options.
+     *
+     * @return a new ChromeDriver instance
+     */
     private static WebDriver createDriver() {
         Logger.getLogger("org.openqa.selenium.devtools.CdpVersionFinder").setLevel(Level.SEVERE);
         Logger.getLogger("org.openqa.selenium.chromium.ChromiumDriver").setLevel(Level.SEVERE);

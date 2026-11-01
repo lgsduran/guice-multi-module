@@ -31,12 +31,15 @@ guice-multi-module/
 └── viacep-module/
     ├── pom.xml
     ├── README.md
+    ├── testng.xml
     └── src/test/
         ├── java/module/
         │   ├── config/
         │   │   ├── base/
         │   │   ├── providers/
         │   │   ├── qualifiers/
+        │   │   │   ├── BaseUrl.java
+        │   │   │   └── CepEndpoint.java
         │   │   └── ViaCepModule.java
         │   └── tests/
         │       └── ViaCepTest.java
@@ -63,7 +66,9 @@ guice-multi-module/
 - `config/providers/ViaCepRequestProvider.java`: fornece a
   `RequestSpecification` do Rest Assured.
 - `config/qualifiers/BaseUrl.java`: qualifier Guice para a URL base.
+- `config/qualifiers/CepEndpoint.java`: qualifier Guice para o endpoint de CEP.
 - `tests/ViaCepTest.java`: valida CEP válido, inexistente e formato inválido.
+- `testng.xml`: seleciona a suite de testes do módulo.
 - `resources/endpoints.yml`: URL base e endpoints da API.
 - `resources/schemas/viacep-response-schema.json`: schema da resposta de CEP.
 
@@ -99,9 +104,9 @@ e Chrome, e publica relatórios do Surefire/Allure como artefato da execução.
 Os módulos Selenium precisam do Chrome instalado; o `viacep-module` precisa de
 acesso à internet para consultar a API pública.
 
-O adaptador Allure do `viacep-module` grava resultados em
-`viacep-module/target/allure-results`. Para gerar o relatório HTML, use a CLI
-do Allure:
+O adaptador Allure grava os resultados do `viacep-module` em
+`viacep-module/target/allure-results`. Para gerar o relatório HTML deste módulo,
+use a CLI do Allure:
 
 ```bash
 mvn -pl viacep-module test

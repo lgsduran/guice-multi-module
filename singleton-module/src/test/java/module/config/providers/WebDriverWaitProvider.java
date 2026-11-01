@@ -15,6 +15,11 @@ import module.config.qualifiers.Driver;
 public class WebDriverWaitProvider implements Provider<WebDriverWait> {
     private final WebDriver driver;
 
+    /**
+     * Creates a new instance of {@link WebDriverWaitProvider}.
+     *
+     * @param driver the WebDriver instance to be used for waiting
+     */
     @Inject
     public WebDriverWaitProvider(@Driver WebDriver driver) {
         this.driver = driver;

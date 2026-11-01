@@ -12,6 +12,13 @@ import java.lang.reflect.Field;
 
 public class ScreenshotExtension implements TestWatcher {
 
+    /**
+     * This method is called when a test fails. It captures a screenshot of the current state of the WebDriver
+     * and attaches it to the Allure report for better debugging.
+     *
+     * @param context the context of the test that failed
+     * @param cause   the exception that caused the test to fail
+     */
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
         try {

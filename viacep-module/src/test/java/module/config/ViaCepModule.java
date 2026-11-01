@@ -20,6 +20,9 @@ public final class ViaCepModule extends AbstractModule {
 
     private final Map<?, ?> configuration = loadConfiguration();
 
+    /**
+     * Creates a new instance of {@link ViaCepModule} and loads configuration from the YAML resource.
+     */
     @Override
     protected void configure() {
         String baseUrl = requiredString(configuration.get("base-url"), "base-url");
@@ -33,17 +36,24 @@ public final class ViaCepModule extends AbstractModule {
             throw invalidConfiguration("endpoints.consulta-cep");
         }
 
+        // Qualifiers distinguish the two String values injected by Guice.
         bind(String.class).annotatedWith(BaseUrl.class).toInstance(baseUrl);
         bind(String.class).annotatedWith(CepEndpoint.class).toInstance(cepEndpoint);
         bind(RequestSpecification.class).toProvider(ViaCepRequestProvider.class);
     }
 
+    /**
+     * Loads configuration from the YAML resource.
+     *
+     * @return the loaded configuration map
+     */
     private static Map<?, ?> loadConfiguration() {
         try (InputStream input = ViaCepModule.class.getClassLoader()
                 .getResourceAsStream(CONFIG_RESOURCE)) {
             if (input == null) {
                 throw new IllegalStateException("Recurso ausente: " + CONFIG_RESOURCE);
             }
+            // SafeConstructor parses YAML data without instantiating arbitrary Java types.
             Object configuration = new Yaml(new SafeConstructor(new LoaderOptions())).load(input);
             return requiredMap(configuration, CONFIG_RESOURCE);
         } catch (IOException e) {
@@ -51,6 +61,13 @@ public final class ViaCepModule extends AbstractModule {
         }
     }
 
+    /**
+     * Returns the map if it is not null, otherwise throws an exception.
+     *
+     * @param value the value to check
+     * @param key   the key for the error message
+     * @return the map if it is not null
+     */
     private static Map<?, ?> requiredMap(Object value, String key) {
         if (value instanceof Map<?, ?> map) {
             return map;
@@ -58,6 +75,13 @@ public final class ViaCepModule extends AbstractModule {
         throw invalidConfiguration(key);
     }
 
+    /**
+     * Returns the string if it is not null or blank, otherwise throws an exception.
+     *
+     * @param value the value to check
+     * @param key   the key for the error message
+     * @return the string if it is not null or blank
+    */
     private static String requiredString(Object value, String key) {
         if (value instanceof String string && !string.isBlank()) {
             return string;
@@ -65,6 +89,12 @@ public final class ViaCepModule extends AbstractModule {
         throw invalidConfiguration(key);
     }
 
+    /**
+     * Returns an IllegalStateException for invalid configuration.
+     *
+     * @param key the key for the error message
+     * @return the IllegalStateException
+     */
     private static IllegalStateException invalidConfiguration(String key) {
         return new IllegalStateException("Configuração inválida: " + key);
     }

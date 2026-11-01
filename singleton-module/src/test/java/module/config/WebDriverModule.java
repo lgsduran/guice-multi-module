@@ -13,6 +13,12 @@ import module.config.qualifiers.DriverWait;
 
 public final class WebDriverModule extends AbstractModule {
 
+    /**
+     * Configures the bindings for WebDriver, WebDriverWait, and BaseUrl.
+     * The WebDriver is bound to a singleton instance provided by WebDriverProvider.
+     * The WebDriverWait is bound to an instance provided by WebDriverWaitProvider.
+     * The BaseUrl is bound to a specific string value.
+     */
     @Override
     protected void configure() {
         // Agora o WebDriver padrão do projeto responde pelo qualificador @Driver
