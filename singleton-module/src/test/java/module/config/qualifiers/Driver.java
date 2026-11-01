@@ -1,4 +1,4 @@
-package module.config;
+package module.config.qualifiers;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -13,4 +13,4 @@ import javax.inject.Qualifier;
 @Qualifier
 @Target({ FIELD, PARAMETER, METHOD })
 @Retention(RUNTIME)
-public @interface BaseUrl {}
+public @interface Driver {}

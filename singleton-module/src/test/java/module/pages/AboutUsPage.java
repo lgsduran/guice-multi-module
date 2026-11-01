@@ -8,17 +8,17 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.inject.Inject;
-
+import module.config.qualifiers.Driver;
+import module.config.qualifiers.DriverWait;
 public class AboutUsPage {
 
-    private final WebDriver driver;
     private final WebDriverWait wait;
 
     @Inject
-    public AboutUsPage(WebDriver driver, WebDriverWait wait) {
-        this.driver = driver;
+    public AboutUsPage(@Driver WebDriver driver, @DriverWait WebDriverWait wait) {
         this.wait = wait;
-        PageFactory.initElements(this.driver, this);
+        // OBRIGATÓRIO: Inicializa os elementos mapeados com @FindBy
+        PageFactory.initElements(driver, this);
     }
 
     @FindBy(css = "[data-target='#exampleModal']")

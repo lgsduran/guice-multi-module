@@ -1,4 +1,4 @@
-package module.config;
+package module.config.providers;
 
 import java.time.Duration;
 
@@ -10,21 +10,30 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import module.config.qualifiers.Driver;
+
 public class WebDriverWaitProvider implements Provider<WebDriverWait> {
     private final WebDriver driver;
 
     @Inject
-    public WebDriverWaitProvider(WebDriver driver) {
+    public WebDriverWaitProvider(@Driver WebDriver driver) {
         this.driver = driver;
     }
 
+    /**
+     * Provides a configured WebDriverWait instance.
+     *
+     * @return a WebDriverWait instance with a timeout of 10 seconds, polling every 500 milliseconds,
+     *         and ignoring NoSuchElementException and StaleElementReferenceException.
+     */
     @Override
     public WebDriverWait get() {
-        return (WebDriverWait) new WebDriverWait(this.driver, Duration.ofSeconds(10))
-            .withTimeout(Duration.ofSeconds(10))        
-            .pollingEvery(Duration.ofSeconds(2))
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        
+        wait.pollingEvery(Duration.ofMillis(500))
             .ignoring(NoSuchElementException.class)
             .ignoring(StaleElementReferenceException.class);
-
+            
+        return wait;
     }
 }

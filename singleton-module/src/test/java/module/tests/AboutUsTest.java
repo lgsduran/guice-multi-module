@@ -1,20 +1,29 @@
 package module.tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.Test;
 
 import com.google.inject.Inject;
 
+import module.config.baseTest.BaseTest;
 import module.pages.AboutUsPage;
 
-//@ExtendWith(GuiceExtension.class) // This handles the bridge
-//@IncludeModule(WebDriverModule.class) // Tells the extension which module to load
+@Epic("Interface do Usuário")
+@Feature("Modal Sobre Nós e Contato")
 public class AboutUsTest extends BaseTest {
 
     @Inject
     private AboutUsPage aboutUsPage;
 
-    @Test
+    @Test // Informa ao JUnit 5 que este método é um caso de teste executável
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Test the About Us page functionality - Valida a abertura do modal e a exibição correta de todos os seus elementos e botões de contato.")
     public void testAboutUsPage() {
+        // Fluxo linear chamando as validações que já possuem @Step dentro da AboutUsPage
         this.aboutUsPage.clickContactLink();
         this.aboutUsPage.validateModalTitle();
         this.aboutUsPage.validateContactEmailLink();
@@ -23,5 +32,4 @@ public class AboutUsTest extends BaseTest {
         this.aboutUsPage.validateCloseButton();
         this.aboutUsPage.validateSendMessageButton();
     }
-    
 }
