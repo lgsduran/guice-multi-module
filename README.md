@@ -13,8 +13,17 @@ Brazilian postal service API.
   test class, a screenshot extension, the Page Object pattern, and JUnit 5
   tests.
 - **`viacep-module`** — Rest Assured configured with Guice, ViaCEP API tests
-  with TestNG, JSON Schema validation, and Allure reports. See the
-  [module README](viacep-module/README.md) for details.
+  with TestNG, JSON Schema validation, and Allure reports.
+
+### ViaCEP Module
+
+- `ViaCepModule` loads and validates the endpoint configuration and defines the
+  Guice bindings.
+- `BaseTest` creates the Guice injector and injects the API configuration.
+- `ViaCepRequestProvider` provides the Rest Assured `RequestSpecification`.
+- `BaseUrl` and `CepEndpoint` are Guice qualifiers for the API URL and endpoint.
+- `endpoints.yml` stores the API URL and CEP route; the JSON schema validates
+  successful responses.
 
 ## Project Structure
 
