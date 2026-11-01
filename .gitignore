@@ -6,6 +6,10 @@ target/
 *.ear
 *.log
 
+# --- Test Reports ---
+**/allure-results/
+**/allure-report/
+
 # --- IDE Files ---
 .idea/
 .settings/

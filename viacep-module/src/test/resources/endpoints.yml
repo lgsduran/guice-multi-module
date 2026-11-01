@@ -1,0 +1,3 @@
+base-url: https://viacep.com.br/ws
+endpoints:
+  consulta-cep: /{cep}/json

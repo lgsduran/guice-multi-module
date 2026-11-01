@@ -1,43 +1,50 @@
 package module.config;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import com.google.inject.Provider; // Ensure this is the correct import!
+import com.google.inject.Provider;
 
 public class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
 
-    private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
+    private static final ThreadLocal<WebDriver> THREAD_LOCAL_DRIVER = new ThreadLocal<>();
 
     @Override
     public WebDriver get() {
-        if (threadLocalDriver.get() == null) 
-            setupDriver();
-        
-        return threadLocalDriver.get();
+        WebDriver driver = THREAD_LOCAL_DRIVER.get();
+        if (driver == null) {
+            driver = createDriver();
+            THREAD_LOCAL_DRIVER.set(driver);
+        }
+        return driver;
     }
 
-    private static void setupDriver() {
-        // You can add logic here to switch between browsers (Chrome, Firefox, etc.)
+    private static WebDriver createDriver() {
+        Logger.getLogger("org.openqa.selenium.devtools.CdpVersionFinder").setLevel(Level.SEVERE);
+        Logger.getLogger("org.openqa.selenium.chromium.ChromiumDriver").setLevel(Level.SEVERE);
+
         ChromeOptions options = new ChromeOptions();
-        options.addArguments
-		(
-			"--no-sandbox",
-			"start-maximized", 
-			"disable-infobars",
-			"--disable-dev-shm-usage",
-			"--headless=new"
-		);
-        
-        threadLocalDriver.set(new ChromeDriver(options));
+        options.addArguments(
+                "--no-sandbox",
+                "start-maximized",
+                "disable-infobars",
+                "--disable-dev-shm-usage",
+                "--headless=new");
+        return new ChromeDriver(options);
     }
 
-    // Static helper method to cleanly close the driver and prevent memory leaks
     public static void quitDriver() {
-        if (threadLocalDriver.get() != null) {
-            threadLocalDriver.get().quit(); // 1. Kills the browser
-            threadLocalDriver.remove(); // 2. CRITICAL: Wipes the dead reference!
+        WebDriver driver = THREAD_LOCAL_DRIVER.get();
+        if (driver != null) {
+            try {
+                driver.quit();
+            } finally {
+                THREAD_LOCAL_DRIVER.remove();
+            }
         }
     }
 }
