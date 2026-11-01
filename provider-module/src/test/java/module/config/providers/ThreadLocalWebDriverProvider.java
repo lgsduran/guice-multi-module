@@ -1,6 +1,5 @@
-package module.config;
+package module.config.providers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openqa.selenium.WebDriver;
@@ -9,10 +8,22 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import com.google.inject.Provider;
 
-public class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
+import java.util.Objects;
+import java.util.function.Supplier;
+
+public final class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
 
     private static final Logger LOGGER = Logger.getLogger(ThreadLocalWebDriverProvider.class.getName());
     private static final ThreadLocal<WebDriver> THREAD_LOCAL_DRIVER = new ThreadLocal<>();
+    private final Supplier<WebDriver> driverFactory;
+
+    public ThreadLocalWebDriverProvider() {
+        this(ThreadLocalWebDriverProvider::createDriver);
+    }
+
+    public ThreadLocalWebDriverProvider(Supplier<WebDriver> driverFactory) {
+        this.driverFactory = Objects.requireNonNull(driverFactory);
+    }
 
     /**
      * Provides a WebDriver instance that is unique to the current thread.
@@ -24,8 +35,8 @@ public class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
     public WebDriver get() {
         WebDriver driver = THREAD_LOCAL_DRIVER.get();
         if (driver == null) {
-            LOGGER.info("Creating a ChromeDriver for the current thread");
-            driver = createDriver();
+            LOGGER.info("Creating a WebDriver for the current thread");
+            driver = driverFactory.get();
             THREAD_LOCAL_DRIVER.set(driver);
         }
         return driver;
@@ -37,24 +48,24 @@ public class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
      * @return a new ChromeDriver instance
      */
     private static WebDriver createDriver() {
-        Logger.getLogger("org.openqa.selenium.devtools.CdpVersionFinder").setLevel(Level.SEVERE);
-        Logger.getLogger("org.openqa.selenium.chromium.ChromiumDriver").setLevel(Level.SEVERE);
-
         ChromeOptions options = new ChromeOptions();
         options.addArguments(
                 "--no-sandbox",
-                "start-maximized",
-                "disable-infobars",
+                "--window-size=1920,1080",
                 "--disable-dev-shm-usage",
                 "--headless=new");
         return new ChromeDriver(options);
     }
 
+    /**
+     * Quits the WebDriver instance associated with the current thread and removes it from the ThreadLocal storage.
+     * This method should be called when the WebDriver is no longer needed to free up resources.
+     */
     public static void quitDriver() {
         WebDriver driver = THREAD_LOCAL_DRIVER.get();
         if (driver != null) {
             try {
-                LOGGER.info("Quitting the ChromeDriver for the current thread");
+                LOGGER.info("Quitting the WebDriver for the current thread");
                 driver.quit();
             } finally {
                 THREAD_LOCAL_DRIVER.remove();

@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 
 import com.google.inject.AbstractModule;
 
+import module.config.providers.ThreadLocalWebDriverProvider;
+
 public final class WebDriverModule extends AbstractModule {
     private static final Logger LOGGER = Logger.getLogger(WebDriverModule.class.getName());
 

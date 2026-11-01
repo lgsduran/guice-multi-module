@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
-import module.config.providers.WebDriverProvider;
 import module.config.providers.WebDriverWaitProvider;
 import module.config.qualifiers.BaseUrl;
 import module.config.qualifiers.Driver;

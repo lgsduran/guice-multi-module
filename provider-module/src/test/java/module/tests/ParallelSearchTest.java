@@ -11,32 +11,43 @@ import org.testng.annotations.Test;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import module.config.ThreadLocalWebDriverProvider;
+import module.config.SearchUrlModule;
 import module.config.WebDriverModule;
+import module.config.providers.ThreadLocalWebDriverProvider;
+import module.config.qualifiers.BingUrl;
+import module.config.qualifiers.GoogleUrl;
 
-@Guice(modules = WebDriverModule.class)
+@Guice(modules = { WebDriverModule.class, SearchUrlModule.class })
 public class ParallelSearchTest {
     private static final Logger LOGGER = Logger.getLogger(ParallelSearchTest.class.getName());
 
     @Inject
     private Provider<WebDriver> driverProvider;
 
+    @Inject
+    @GoogleUrl
+    private String googleUrl;
+
+    @Inject
+    @BingUrl
+    private String bingUrl;
+
     @Test
     public void testGoogle() {
-        LOGGER.info("Starting Google search test");
+        LOGGER.info(() -> "Starting Google search test on " + Thread.currentThread().getName());
         WebDriver driver = driverProvider.get();
-        driver.get("https://www.google.com");
+        driver.get(googleUrl);
         Assert.assertEquals(driver.getTitle(), "Google");
-        LOGGER.info("Google search test completed");
+        LOGGER.info(() -> "Google search test completed on " + Thread.currentThread().getName());
     }
 
     @Test
     public void testBing() {
-        LOGGER.info("Starting Bing search test");
+        LOGGER.info(() -> "Starting Bing search test on " + Thread.currentThread().getName());
         WebDriver driver = driverProvider.get();
-        driver.get("https://www.bing.com");
+        driver.get(bingUrl);
         Assert.assertTrue(driver.getTitle().contains("Bing"));
-        LOGGER.info("Bing search test completed");
+        LOGGER.info(() -> "Bing search test completed on " + Thread.currentThread().getName());
     }
 
     @AfterMethod

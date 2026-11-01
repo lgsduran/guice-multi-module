@@ -26,7 +26,13 @@ guice-multi-module/
 │   ├── testng.xml
 │   └── src/test/java/module/
 │       ├── config/
+│       │   ├── providers/
+│       │   ├── qualifiers/
+│       │   ├── SearchUrlModule.java
+│       │   └── WebDriverModule.java
 │       └── tests/
+│           ├── ParallelSearchTest.java
+│           └── ThreadLocalWebDriverProviderTest.java
 ├── singleton-module/
 │   └── src/test/
 │       ├── java/module/
@@ -79,8 +85,10 @@ mvn -pl viacep-module test
 ```
 
 Each TestNG module's Surefire configuration points to its `testng.xml` suite.
-The `provider-module` suite selects `module.tests.ParallelSearchTest`; the
-`viacep-module` suite selects `module.tests.ViaCepTest`. Therefore,
+The `provider-module` suite includes a network-free
+`ThreadLocalWebDriverProviderTest` and runs the
+`ParallelSearchTest` methods on two TestNG threads; the `viacep-module` suite
+selects `module.tests.ViaCepTest`. Therefore,
 `mvn -pl provider-module test`, `mvn -pl viacep-module test`, and the CI's
 `mvn verify` execute the corresponding TestNG suites. The `singleton-module`
 continues to use JUnit 5.
