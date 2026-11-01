@@ -1,4 +1,4 @@
-package module.config.baseTest;
+package module.config.base;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

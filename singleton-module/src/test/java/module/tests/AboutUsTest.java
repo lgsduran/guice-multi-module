@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.google.inject.Inject;
 
-import module.config.baseTest.BaseTest;
+import module.config.base.BaseTest;
 import module.pages.AboutUsPage;
 
 @Epic("Interface do Usuário")
