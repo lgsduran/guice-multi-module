@@ -15,6 +15,32 @@ Brazilian postal service API.
 - **`viacep-module`** — Rest Assured configured with Guice, ViaCEP API tests
   with TestNG, JSON Schema validation, and Allure reports.
 
+### Provider Module
+
+- `WebDriverModule` binds Guice's `WebDriver` provider to
+  `ThreadLocalWebDriverProvider`, which creates and reuses a ChromeDriver per
+  TestNG worker thread.
+- `quitDriver()` closes and removes the current thread's driver after each
+  search test.
+- `SearchUrlModule` loads and validates the Google and Bing URLs from
+  `config.properties`, binding them with the `GoogleUrl` and `BingUrl`
+  qualifiers.
+- `ParallelSearchTest` runs the Google and Bing browser tests in parallel;
+  `ThreadLocalWebDriverProviderTest` verifies driver isolation and reuse
+  without launching a browser.
+
+### Singleton Module
+
+- `WebDriverModule` binds a singleton ChromeDriver, a configured `WebDriverWait`,
+  and the Demoblaze base URL with Guice qualifiers.
+- `BaseTest` initializes Guice and the browser before each JUnit 5 test, then
+  closes the browser afterward.
+- `AboutUsPage` uses the Page Object pattern to interact with and validate the
+  About Us modal; `AboutUsTest` covers its fields and buttons.
+- `ScreenshotExtension` attaches a screenshot to the Allure report when a test
+  fails.
+- `config.properties` configures the explicit-wait timeout.
+
 ### ViaCEP Module
 
 - `ViaCepModule` loads and validates the endpoint configuration and defines the
