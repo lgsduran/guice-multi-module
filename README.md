@@ -1,21 +1,22 @@
-# Projeto multi-módulo Guice
+# Guice Multi-Module Project
 
-Projeto Maven de estudo com três módulos independentes, demonstrando injeção
-de dependências com Guice, testes de UI com Selenium e testes de API com
-Rest Assured. O `viacep-module` usa a API pública ViaCEP, não a API oficial dos
-Correios.
+A Maven study project with three independent modules demonstrating dependency
+injection with Guice, UI testing with Selenium, and API testing with
+Rest Assured. The `viacep-module` uses the public ViaCEP API, not the official
+Brazilian postal service API.
 
-## Módulos
+## Modules
 
-- **`provider-module`** — Guice `Provider`, WebDriver isolado por thread e
-  testes Selenium com TestNG.
-- **`singleton-module`** — WebDriver singleton, providers, qualifiers, classe
-  base, extensão de screenshots, Page Object e testes JUnit 5.
-- **`viacep-module`** — Rest Assured configurado com Guice, testes da API
-  ViaCEP, validação de JSON Schema e relatórios Allure. Consulte o
-  [README do módulo](viacep-module/README.md) para detalhes.
+- **`provider-module`** — Guice `Provider`, a thread-local WebDriver pattern,
+  and Selenium tests with TestNG.
+- **`singleton-module`** — Singleton WebDriver, providers, qualifiers, a base
+  test class, a screenshot extension, the Page Object pattern, and JUnit 5
+  tests.
+- **`viacep-module`** — Rest Assured configured with Guice, ViaCEP API tests,
+  JSON Schema validation, and Allure reports. See the
+  [module README](viacep-module/README.md) for details.
 
-## Estrutura
+## Project Structure
 
 ```text
 guice-multi-module/
@@ -46,18 +47,18 @@ guice-multi-module/
             └── schemas/
 ```
 
-## Pré-requisitos
+## Prerequisites
 
 - Java 17
 - Maven
-- Chrome instalado para os testes Selenium
-- Acesso à internet para os testes que consultam Google, Bing e ViaCEP
+- Chrome installed for the Selenium tests
+- Internet access for tests that call Google, Bing, and ViaCEP
 
-## Executar os testes
+## Running the Tests
 
-Execute os comandos na raiz do repositório.
+Run these commands from the repository root.
 
-Para rodar cada módulo:
+To run an individual module:
 
 ```bash
 # TestNG + Selenium + Guice Provider
@@ -70,26 +71,26 @@ mvn -pl singleton-module test
 mvn -pl viacep-module test
 ```
 
-Para rodar todos os testes:
+To run all tests:
 
 ```bash
 mvn test
 ```
 
-Para executar a verificação completa do reactor:
+To run the full Maven reactor verification:
 
 ```bash
 mvn verify
 ```
 
-O GitHub Actions executa `mvn verify` em pushes e pull requests, usando
-Ubuntu 24.04, Java 17 e Chrome. Os relatórios Surefire e Allure ficam
-disponíveis como artefatos da execução.
+GitHub Actions runs `mvn verify` on pushes and pull requests using Ubuntu
+24.04, Java 17, and Chrome. Surefire and Allure reports are available as
+workflow artifacts.
 
-## Relatório Allure
+## Allure Report
 
-Após executar os testes do `viacep-module`, gere o relatório HTML com a CLI do
-Allure:
+After running the `viacep-module` tests, generate the HTML report with the
+Allure CLI:
 
 ```bash
 allure generate viacep-module/target/allure-results \
