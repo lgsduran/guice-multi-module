@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WebDriverProvider implements Provider<WebDriver> {
+    private static final Logger LOGGER = Logger.getLogger(WebDriverProvider.class.getName());
     
     // Configuração agressiva e definitiva para desligar avisos do Selenium no console
     static {
@@ -34,6 +35,7 @@ public class WebDriverProvider implements Provider<WebDriver> {
         if (driver == null) {
             synchronized (this) {
                 if (driver == null) {
+                    LOGGER.info("Creating the shared ChromeDriver instance");
                     driver = createChromeDriver();
                 }
             }

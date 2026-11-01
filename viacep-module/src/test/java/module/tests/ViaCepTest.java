@@ -18,9 +18,13 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.logging.Logger;
+
 @Epic("API ViaCEP")
 @Feature("Consulta de CEP")
 public class ViaCepTest extends BaseTest {
+    private static final Logger LOGGER = Logger.getLogger(ViaCepTest.class.getName());
+
     @Test(description = "Deve retornar 200 OK e o endereço correto ao buscar um CEP válido")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Valida os campos de endereço retornados para um CEP válido.")
@@ -59,8 +63,11 @@ public class ViaCepTest extends BaseTest {
     }
 
     private Response consultarCep(String cep) {
-        return request
+        LOGGER.info("Sending request to the ViaCEP API");
+        Response response = request
                 .pathParam("cep", cep)
                 .get(cepEndpoint);
+        LOGGER.info(() -> "ViaCEP responded with HTTP " + response.statusCode());
+        return response;
     }
 }

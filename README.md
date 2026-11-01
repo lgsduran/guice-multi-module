@@ -28,14 +28,17 @@ guice-multi-module/
 │       ├── config/
 │       └── tests/
 ├── singleton-module/
-│   └── src/test/java/module/
-│       ├── config/
-│       │   ├── base/
-│       │   ├── extensions/
-│       │   ├── providers/
-│       │   └── qualifiers/
-│       ├── pages/
-│       └── tests/
+│   └── src/test/
+│       ├── java/module/
+│       │   ├── config/
+│       │   │   ├── base/
+│       │   │   ├── extensions/
+│       │   │   ├── providers/
+│       │   │   └── qualifiers/
+│       │   ├── pages/
+│       │   └── tests/
+│       └── resources/
+│           └── config.properties
 └── viacep-module/
     ├── pom.xml
     ├── testng.xml
@@ -81,6 +84,10 @@ The `provider-module` suite selects `module.tests.ParallelSearchTest`; the
 `mvn -pl provider-module test`, `mvn -pl viacep-module test`, and the CI's
 `mvn verify` execute the corresponding TestNG suites. The `singleton-module`
 continues to use JUnit 5.
+
+The `singleton-module` explicit-wait timeout is configured in
+`singleton-module/src/test/resources/config.properties` with the
+`webdriver.wait.timeout.seconds` property.
 
 To run all tests:
 

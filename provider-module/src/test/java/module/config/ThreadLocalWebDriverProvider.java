@@ -11,6 +11,7 @@ import com.google.inject.Provider;
 
 public class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
 
+    private static final Logger LOGGER = Logger.getLogger(ThreadLocalWebDriverProvider.class.getName());
     private static final ThreadLocal<WebDriver> THREAD_LOCAL_DRIVER = new ThreadLocal<>();
 
     /**
@@ -23,6 +24,7 @@ public class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
     public WebDriver get() {
         WebDriver driver = THREAD_LOCAL_DRIVER.get();
         if (driver == null) {
+            LOGGER.info("Creating a ChromeDriver for the current thread");
             driver = createDriver();
             THREAD_LOCAL_DRIVER.set(driver);
         }
@@ -52,6 +54,7 @@ public class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
         WebDriver driver = THREAD_LOCAL_DRIVER.get();
         if (driver != null) {
             try {
+                LOGGER.info("Quitting the ChromeDriver for the current thread");
                 driver.quit();
             } finally {
                 THREAD_LOCAL_DRIVER.remove();

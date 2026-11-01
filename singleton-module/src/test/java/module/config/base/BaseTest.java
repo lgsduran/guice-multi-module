@@ -1,5 +1,7 @@
 package module.config.base;
 
+import java.util.logging.Logger;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
@@ -16,6 +18,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(ScreenshotExtension.class)
 public abstract class BaseTest {
+    private static final Logger LOGGER = Logger.getLogger(BaseTest.class.getName());
+
     protected Injector injector;
 
     @Inject
@@ -28,6 +32,7 @@ public abstract class BaseTest {
 
     @BeforeEach
     public void setUp() {
+        LOGGER.info("Initializing Guice and WebDriver for the test");
         // Inicializa o injetor do Guice com o módulo configurado
         injector = Guice.createInjector(new WebDriverModule());
 
@@ -43,6 +48,7 @@ public abstract class BaseTest {
 
         // Navega para a URL base definida no módulo
         driver.navigate().to(baseUrl);
+        LOGGER.info("Opened the configured base URL");
     }
 
     /**
@@ -52,6 +58,7 @@ public abstract class BaseTest {
     @AfterEach
     public void tearDown() {
         if (this.driver != null) {
+            LOGGER.info("Closing the WebDriver after the test");
             this.driver.quit();
         }
     }

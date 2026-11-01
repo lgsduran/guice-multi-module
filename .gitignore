@@ -29,6 +29,8 @@ msedgedriver
 # If you are using a local properties file for environment config
 # and it contains sensitive data, exclude it.
 config.properties
+# This module's test configuration contains only non-sensitive defaults.
+!singleton-module/src/test/resources/config.properties
 # Or, if you want to commit the template but ignore the local override:
 # config.local.properties
 
