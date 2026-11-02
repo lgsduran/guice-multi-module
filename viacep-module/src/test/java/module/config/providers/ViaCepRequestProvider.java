@@ -1,6 +1,7 @@
 package module.config.providers;
 
 import module.config.qualifiers.BaseUrl;
+import module.reports.ApiRequestLogFilter;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -31,6 +32,7 @@ public final class ViaCepRequestProvider implements Provider<RequestSpecificatio
     public RequestSpecification get() {
         return RestAssured.given()
                 .baseUri(baseUrl)
-                .accept(ContentType.JSON);
+                .accept(ContentType.JSON)
+                .filter(new ApiRequestLogFilter());
     }
 }

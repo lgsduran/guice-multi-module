@@ -72,4 +72,8 @@ public final class ThreadLocalWebDriverProvider implements Provider<WebDriver> {
             }
         }
     }
+
+    public static WebDriver currentDriver() {
+        return THREAD_LOCAL_DRIVER.get();
+    }
 }

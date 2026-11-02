@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
+import org.testng.ITestResult;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -16,6 +17,7 @@ import module.config.WebDriverModule;
 import module.config.providers.ThreadLocalWebDriverProvider;
 import module.config.qualifiers.BingUrl;
 import module.config.qualifiers.GoogleUrl;
+import module.reports.ExecutionPdfListener;
 
 @Guice(modules = { WebDriverModule.class, SearchUrlModule.class })
 public class ParallelSearchTest {
@@ -51,8 +53,9 @@ public class ParallelSearchTest {
     }
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
         LOGGER.info("Closing the WebDriver for the current thread");
+        ExecutionPdfListener.captureScreenshot(result);
         ThreadLocalWebDriverProvider.quitDriver();
     }
 }

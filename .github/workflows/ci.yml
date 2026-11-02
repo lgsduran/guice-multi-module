@@ -43,6 +43,9 @@ jobs:
           path: |
             **/target/surefire-reports/**
             **/target/allure-results/**
+            provider-module/target/provider-test-logs-*.pdf
+            singleton-module/target/singleton-test-logs-*.pdf
+            viacep-module/target/api-test-logs-*.pdf
             singleton-module/allure-results/**
           if-no-files-found: ignore
           retention-days: 7

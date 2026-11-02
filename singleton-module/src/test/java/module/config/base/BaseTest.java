@@ -14,9 +14,10 @@ import module.config.WebDriverModule;
 import module.config.qualifiers.BaseUrl;
 import module.config.qualifiers.Driver;
 import module.config.extensions.ScreenshotExtension;
+import module.reports.ExecutionPdfExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith(ScreenshotExtension.class)
+@ExtendWith({ ScreenshotExtension.class, ExecutionPdfExtension.class })
 public abstract class BaseTest {
     private static final Logger LOGGER = Logger.getLogger(BaseTest.class.getName());
 

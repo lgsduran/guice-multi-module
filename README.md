@@ -131,6 +131,14 @@ selects `module.tests.ViaCepTest`. Therefore,
 `mvn verify` execute the corresponding TestNG suites. The `singleton-module`
 continues to use JUnit 5.
 
+The Provider, Singleton, and ViaCEP suites generate a timestamped execution PDF
+under each module's `target` directory on every run. The browser modules include
+screenshots as execution evidence; ViaCEP includes request and response logs.
+The CI workflow includes these PDFs in its `test-reports` artifact. Configure
+each output path with the `test.report.pdf.path` property in Provider and
+Singleton, or `api.test.pdf.path` in ViaCEP, in that module's
+`src/test/resources/config.properties`.
+
 The `singleton-module` explicit-wait timeout is configured in
 `singleton-module/src/test/resources/config.properties` with the
 `webdriver.wait.timeout.seconds` property.

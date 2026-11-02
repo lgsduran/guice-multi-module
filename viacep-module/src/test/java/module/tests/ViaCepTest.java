@@ -34,7 +34,6 @@ public class ViaCepTest extends BaseTest {
         response.then()
             .statusCode(200)
             .contentType(ContentType.JSON)
-            .log().all()
             .body(matchesJsonSchemaInClasspath("schemas/viacep-response-schema.json"))
             .body("cep", equalTo("01001-000"))
             .body("logradouro", is("Praça da Sé"))

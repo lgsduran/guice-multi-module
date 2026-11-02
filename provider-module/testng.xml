@@ -1,5 +1,8 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Provider Module Test Suite" parallel="methods" thread-count="2">
+    <listeners>
+        <listener class-name="module.reports.ExecutionPdfListener"/>
+    </listeners>
     <test name="Parallel Search Tests">
         <classes>
             <class name="module.tests.ThreadLocalWebDriverProviderTest"/>
