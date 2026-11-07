@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+    {
+      "type": "java",
+      "name": "Debug TestNG: provider-module",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "preLaunchTask": "Debug TestNG: provider-module"
+    },
+    {
+      "type": "java",
+      "name": "Debug TestNG: viacep-module",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "preLaunchTask": "Debug TestNG: viacep-module"
+    },
+    {
+      "type": "coreclr",
+      "name": "Attach to .NET 5+ or .NET Core",
+      "request": "attach",
+      "processId": "${command:pickProcess}"
+    }
+  ]
+}

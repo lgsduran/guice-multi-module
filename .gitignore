@@ -16,7 +16,10 @@ target/
 .project
 .classpath
 *.iml
-.vscode/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
 
 # --- Selenium/Drivers ---
 # Don't commit driver binaries; download them via WebDriverManager
