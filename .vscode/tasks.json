@@ -1,0 +1,61 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Debug TestNG: provider-module",
+      "type": "process",
+      "command": "mvn",
+      "args": [
+        "-pl",
+        "provider-module",
+        "test",
+        "-Dmaven.surefire.debug"
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "maven",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^\\[ERROR\\] (.+?):\\[(\\d+),(\\d+)\\] (.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        },
+        "background": {
+          "activeOnStart": false,
+          "beginsPattern": "Listening for transport dt_socket at address: 5005",
+          "endsPattern": "BUILD (SUCCESS|FAILURE)"
+        }
+      }
+    },
+    {
+      "label": "Debug TestNG: viacep-module",
+      "type": "process",
+      "command": "mvn",
+      "args": [
+        "-pl",
+        "viacep-module",
+        "test",
+        "-Dmaven.surefire.debug"
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "maven",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^\\[ERROR\\] (.+?):\\[(\\d+),(\\d+)\\] (.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        },
+        "background": {
+          "activeOnStart": false,
+          "beginsPattern": "Listening for transport dt_socket at address: 5005",
+          "endsPattern": "BUILD (SUCCESS|FAILURE)"
+        }
+      }
+    }
+  ]
+}

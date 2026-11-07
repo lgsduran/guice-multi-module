@@ -146,6 +146,24 @@ The `provider-module` Google and Bing URLs are configured in
 `provider-module/src/test/resources/config.properties` with the `google.url`
 and `bing.url` properties.
 
+## Debugging TestNG in VS Code
+
+Open the repository root in VS Code and install the recommended Java extensions
+when prompted. In **Run and Debug**, select **Debug TestNG: provider-module** or
+**Debug TestNG: viacep-module** and press F5. VS Code starts the module's Maven
+TestNG suite with Surefire suspended, then attaches the Java debugger on port
+5005. Set breakpoints in the module's `src/test/java` files before starting.
+
+The provider suite runs test methods in parallel, so a breakpoint can be reached
+by more than one TestNG worker. Debug one module at a time because both launch
+configurations use the same local debug port. The `singleton-module` uses JUnit
+5 and is not included in these TestNG launch configurations.
+
+The **Attach to .NET 5+ or .NET Core** configuration is also available for
+attaching to a running .NET process. Install the recommended C# extension, start
+the .NET process, then select this configuration in **Run and Debug** and choose
+the process from the picker.
+
 To run all tests:
 
 ```bash
